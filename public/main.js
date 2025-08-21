@@ -322,8 +322,8 @@ class GameOverScene extends Phaser.Scene {
 
 const config = {
     type: Phaser.AUTO,
-    width: 1280,
-    height: 720,
+    width: window.innerWidth,
+    height: window.innerHeight,
     parent: 'game-container',
     backgroundColor: '#000',
     scale: {
@@ -337,4 +337,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+window.addEventListener('resize', () => {
+    game.scale.resize(window.innerWidth, window.innerHeight);
+});
 
