@@ -47,10 +47,10 @@ class StartMenuScene extends Phaser.Scene {
             .setInteractive()
             .setScale(1);
 
-        let startButtonY = this.scale.height / 2 + 0;
+        let startButtonY = this.scale.height / 2 + 50;
         let baseY = startButtonY - 80; 
 
-        let titleMagic = this.add.text(this.scale.width / 2 + 0, baseY, 'Magic', {
+        let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Magic', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -99,7 +99,9 @@ class StartMenuScene extends Phaser.Scene {
     }
 }
 
-
+// -----------------------------
+// Scene Game
+// -----------------------------
 class GameScene extends Phaser.Scene {
     constructor() { super('GameScene'); }
     init(data) {
@@ -113,18 +115,10 @@ class GameScene extends Phaser.Scene {
         this.load.image('background', 'assets/background.png');
     }
     create() {
-        // Background full screen
         this.add.image(this.scale.width / 2, this.scale.height / 2, 'background')
             .setDisplaySize(this.scale.width, this.scale.height);
 
-        // ✅ Skala otomatis sesuai ukuran layar
-        let baseScale = 0.5; // ukuran normal
-        if (this.scale.width < 500) baseScale = 0.35; // layar kecil
-        else if (this.scale.width > 1000) baseScale = 0.7; // layar besar
-        this.spriteScale = baseScale;
-
-        // ✅ Ukuran grid mengikuti skala
-        this.cellSize = 30 * this.spriteScale;
+        this.cellSize = 30;
         this.speed = this.cellSize;
         this.direction = 'RIGHT';
         this.nextDirection = 'RIGHT';
@@ -135,22 +129,15 @@ class GameScene extends Phaser.Scene {
         const startX = Math.floor(this.scale.width / (2 * this.cellSize)) * this.cellSize;
         const startY = Math.floor(this.scale.height / (2 * this.cellSize)) * this.cellSize;
 
-        // ✅ Snake awal (head, body, tail) dengan scale
         this.snake = [];
-        let head = this.add.sprite(startX, startY, 'head')
-            .setDepth(1)
-            .setScale(this.spriteScale);
-        let body1 = this.add.sprite(startX - this.cellSize, startY, 'body')
-            .setScale(this.spriteScale);
-        let tail = this.add.sprite(startX - this.cellSize * 2, startY, 'tail')
-            .setScale(this.spriteScale);
+        let head = this.add.sprite(startX, startY, 'head').setDepth(1);
+        let body1 = this.add.sprite(startX - this.cellSize, startY, 'body');
+        let tail = this.add.sprite(startX - this.cellSize * 2, startY, 'tail');
         this.snake.push(head, body1, tail);
 
-        // ✅ Food dengan scale
-        this.food = this.add.sprite(0, 0, 'food').setScale(this.spriteScale);
+        this.food = this.add.sprite(0, 0, 'food');
         this.placeFood();
 
-        // ✅ Score text
         this.scoreText = this.add.text(10, 10, 'MON: 0', { 
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '24px', 
@@ -159,10 +146,8 @@ class GameScene extends Phaser.Scene {
             strokeThickness: 6
         });
 
-        // ✅ Keyboard control
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        // ✅ Swipe control
         this.input.on('pointerdown', (pointer) => {
             this.startX = pointer.x;
             this.startY = pointer.y;
@@ -226,6 +211,10 @@ class GameScene extends Phaser.Scene {
         else if (this.direction === 'DOWN') head.angle = 90;
 
         for (let i = 1; i < this.snake.length; i++) {
+            this.snake[i].angle = this.snake[i - 1].angle;
+        }
+
+        for (let i = 1; i < this.snake.length; i++) {
             if (head.x === this.snake[i].x && head.y === this.snake[i].y) {
                 this.gameOver();
                 return;
@@ -237,7 +226,7 @@ class GameScene extends Phaser.Scene {
                 this.snake[this.snake.length - 1].x,
                 this.snake[this.snake.length - 1].y,
                 'body'
-            ).setScale(this.spriteScale);
+            );
             this.snake.push(newSegment);
             this.scoreMON = Math.min(5, this.scoreMON + 0.1);
             this.scoreText.setText('MON: ' + this.scoreMON.toFixed(1));
@@ -278,7 +267,6 @@ class GameScene extends Phaser.Scene {
         this.scene.start('GameOverScene', { score: this.scoreMON });
     }
 }
-
 
 class GameOverScene extends Phaser.Scene {
     constructor() { super('GameOverScene'); }
