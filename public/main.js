@@ -47,10 +47,10 @@ class StartMenuScene extends Phaser.Scene {
             .setInteractive()
             .setScale(1);
 
-        let startButtonY = this.scale.height / 2 + 50;
+        let startButtonY = this.scale.height / 2 + 0;
         let baseY = startButtonY - 80; 
 
-        let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Eth', {
+        let titleMagic = this.add.text(this.scale.width / 2 + 0, baseY, 'Magic', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -59,7 +59,7 @@ class StartMenuScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(1, 0.5);
 
-        let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'OS', {
+        let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'Worm', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -118,7 +118,7 @@ class GameScene extends Phaser.Scene {
         this.add.image(this.scale.width / 2, this.scale.height / 2, 'background')
             .setDisplaySize(this.scale.width, this.scale.height);
 
-        this.cellSize = 20;
+        this.cellSize = 40;
         this.speed = this.cellSize;
         this.direction = 'RIGHT';
         this.nextDirection = 'RIGHT';
