@@ -320,28 +320,18 @@ class GameOverScene extends Phaser.Scene {
     }
 }
 
+
 const config = {
     type: Phaser.AUTO,
-    width: 640, // resolusi dasar (16:9)
-    height: 360,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    backgroundColor: '#2d2d2d',
     parent: 'game-container',
-    backgroundColor: '#000',
-    scale: {
-        mode: Phaser.Scale.FIT, // menjaga aspect ratio
-        autoCenter: Phaser.Scale.CENTER_BOTH, // pusatkan di layar
-        min: {
-            width: 640,
-            height: 360
-        },
-        max: {
-            width: 1280,
-            height: 720
-        }
-    },
-    scene: [StartMenuScene, GameScene, GameOverScene],
-    physics: {
-        default: 'arcade'
-    }
+    scene: [StartMenuScene, GameScene, GameOverScene]
 };
 
 const game = new Phaser.Game(config);
+
+window.addEventListener('resize', () => {
+    game.scale.resize(window.innerWidth, window.innerHeight);
+});
