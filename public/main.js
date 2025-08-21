@@ -322,8 +322,8 @@ class GameOverScene extends Phaser.Scene {
 
 const config = {
     type: Phaser.AUTO,
-    width: 1280, // resolusi dasar (16:9)
-    height: 720,
+    width: 640, // resolusi dasar (16:9)
+    height: 360,
     parent: 'game-container',
     backgroundColor: '#000',
     scale: {
