@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-// ABI kontrak faucet kamu
+// Lengkap ABI kontrak faucet kamu
 const ABI = [
   {
     "inputs": [],
@@ -106,6 +106,15 @@ const ABI = [
 const CONTRACT_ADDRESS = "0x811a9c458151b6e7990854013B5FEDB3A5e03608";
 
 export default async function handler(req, res) {
+  // Tambahan: CORS agar bisa diakses dari domain berbeda
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
@@ -123,20 +132,25 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "wallet and score required" });
     }
 
+    // Validasi alamat wallet
+    if (!ethers.utils.isAddress(recipient)) {
+      return res.status(400).json({ error: "Invalid wallet address" });
+    }
+
     const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
     const signer = new ethers.Wallet(OWNER_PRIVATE_KEY, provider);
     const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
     const amountWei = ethers.utils.parseEther(String(score));
 
-    // Cek cooldown
+    // Cek cooldown (24 jam)
     const last = await contract.getLastClaim(recipient);
     const now = Math.floor(Date.now() / 1000);
     if (now < last.toNumber() + 86400) {
       return res.status(400).json({ error: "cooldown", wait: (last.toNumber() + 86400) - now });
     }
 
-    // Kirim transaksi
+    // Kirim transaksi claim
     const tx = await contract.claim(recipient, amountWei, { gasLimit: 200000 });
     const receipt = await tx.wait();
 
@@ -145,4 +159,4 @@ export default async function handler(req, res) {
     console.error(err);
     return res.status(500).json({ error: err.message || "Internal server error" });
   }
-}
+      }
