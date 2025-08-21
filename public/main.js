@@ -43,7 +43,7 @@ class StartMenuScene extends Phaser.Scene {
         this.add.image(this.scale.width / 1, this.scale.height / 1, 'startBg')
             .setDisplaySize(this.scale.width, this.scale.height);
 
-        let startButton = this.add.image(this.scale.width / 1, this.scale.height / 2 + 50, 'startBtn')
+        let startButton = this.add.image(this.scale.width / 1, this.scale.height / 1 + 50, 'startBtn')
             .setInteractive()
             .setScale(1);
 
@@ -52,7 +52,7 @@ class StartMenuScene extends Phaser.Scene {
 
         let titleMagic = this.add.text(this.scale.width / 1 + 50, baseY, 'Magic', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '80px',
+            fontSize: '30px',
             fontStyle: 'bold',
             fill: '#000000', 
             stroke: '#8B4513',
@@ -61,7 +61,7 @@ class StartMenuScene extends Phaser.Scene {
 
         let titleWorm = this.add.text(this.scale.width / 1 + 50, baseY, 'Worm', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '80px',
+            fontSize: '30px',
             fontStyle: 'bold',
             fill: '#7393e0', 
             stroke: '#8B4513',
@@ -95,7 +95,7 @@ class StartMenuScene extends Phaser.Scene {
         this.add.text(this.scale.width / 1, this.scale.height - 50, 'Swipe atau gunakan tombol panah untuk bermain', {
             fontSize: '18px',
             fill: '#fff'
-        }).setOrigin(0.5);
+        }).setOrigin(0.3);
     }
 }
 
@@ -140,7 +140,7 @@ class GameScene extends Phaser.Scene {
 
         this.scoreText = this.add.text(10, 10, 'MON: 0', { 
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '24px', 
+            fontSize: '18px', 
             fill: '#fff', 
             stroke: '#8B4513',
             strokeThickness: 6
@@ -283,7 +283,7 @@ class GameOverScene extends Phaser.Scene {
 
         let title = this.add.text(this.scale.width / 1, this.scale.height / 1 - 150, 'GAME OVER', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '64px',
+            fontSize: '30px',
             fontStyle: 'bold',
             fill: '#f00',
             stroke: '#000',
@@ -301,7 +301,7 @@ class GameOverScene extends Phaser.Scene {
         this.add.text(this.scale.width / 1, this.scale.height / 1 - 50,
             `MON: ${this.finalScore.toFixed(1)}`, {
                 fontFamily: '"Press Start 2P", monospace',
-                fontSize: '28px',
+                fontSize: '20px',
                 fill: '#fff',
                 align: 'center'
             }).setOrigin(0.5);
