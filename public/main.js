@@ -319,40 +319,7 @@ class GameOverScene extends Phaser.Scene {
         });
     }
 }
-// ==========================
-// Responsive Canvas Snippet
-// ==========================
-const ORIGINAL_WIDTH = 800;
-const ORIGINAL_HEIGHT = 600;
 
-function resizeCanvas() {
-    const windowRatio = window.innerWidth / window.innerHeight;
-    const gameRatio = ORIGINAL_WIDTH / ORIGINAL_HEIGHT;
-
-    let newWidth, newHeight;
-
-    if (windowRatio > gameRatio) {
-        newHeight = window.innerHeight;
-        newWidth = newHeight * gameRatio;
-    } else {
-        newWidth = window.innerWidth;
-        newHeight = newWidth / gameRatio;
-    }
-
-    // CSS scaling untuk tampilan
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) {
-        gameContainer.style.width = `${newWidth}px`;
-        gameContainer.style.height = `${newHeight}px`;
-        gameContainer.style.margin = '0 auto';
-    }
-}
-
-// Jalankan resize pertama kali
-resizeCanvas();
-
-// Resize otomatis saat orientasi atau ukuran layar berubah
-window.addEventListener("resize", resizeCanvas);
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
