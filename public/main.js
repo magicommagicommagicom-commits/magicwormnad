@@ -50,7 +50,7 @@ class StartMenuScene extends Phaser.Scene {
         let startButtonY = this.scale.height / 2 + 50;
         let baseY = startButtonY - 80; 
 
-        let titleEth = this.add.text(this.scale.width / 2 + 50, baseY, 'Eth', {
+        let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Eth', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -59,7 +59,7 @@ class StartMenuScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(1, 0.5);
 
-        let titleOS = this.add.text(this.scale.width / 2 + 50, baseY, 'OS', {
+        let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'OS', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -69,7 +69,7 @@ class StartMenuScene extends Phaser.Scene {
         }).setOrigin(0, 0.5);
 
         this.tweens.add({
-            targets: [titleEth, titleOS],
+            targets: [titleMagic, titleWorm],
             y: baseY - 5,
             duration: 1000,
             yoyo: true,
@@ -118,7 +118,7 @@ class GameScene extends Phaser.Scene {
         this.add.image(this.scale.width / 2, this.scale.height / 2, 'background')
             .setDisplaySize(this.scale.width, this.scale.height);
 
-        this.cellSize = 30;
+        this.cellSize = 20;
         this.speed = this.cellSize;
         this.direction = 'RIGHT';
         this.nextDirection = 'RIGHT';
