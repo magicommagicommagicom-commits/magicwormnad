@@ -40,17 +40,17 @@ class StartMenuScene extends Phaser.Scene {
         this.load.image('startBtn', 'assets/start-button.png');
     }
     create() {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
+        this.add.image(this.scale.width / 1, this.scale.height / 1, 'startBg')
             .setDisplaySize(this.scale.width, this.scale.height);
 
-        let startButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 50, 'startBtn')
+        let startButton = this.add.image(this.scale.width / 1, this.scale.height / 2 + 50, 'startBtn')
             .setInteractive()
             .setScale(1);
 
         let startButtonY = this.scale.height / 2 + 50;
         let baseY = startButtonY - 80; 
 
-        let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Magic', {
+        let titleMagic = this.add.text(this.scale.width / 1 + 50, baseY, 'Magic', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -59,7 +59,7 @@ class StartMenuScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(1, 0.5);
 
-        let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'Worm', {
+        let titleWorm = this.add.text(this.scale.width / 1 + 50, baseY, 'Worm', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '80px',
             fontStyle: 'bold',
@@ -92,7 +92,7 @@ class StartMenuScene extends Phaser.Scene {
             this.scene.start('GameScene', { wallet: wallet });
         });
 
-        this.add.text(this.scale.width / 2, this.scale.height - 50, 'Swipe atau gunakan tombol panah untuk bermain', {
+        this.add.text(this.scale.width / 1, this.scale.height - 50, 'Swipe atau gunakan tombol panah untuk bermain', {
             fontSize: '18px',
             fill: '#fff'
         }).setOrigin(0.5);
@@ -115,7 +115,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('background', 'assets/background.png');
     }
     create() {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'background')
+        this.add.image(this.scale.width / 1, this.scale.height / 1, 'background')
             .setDisplaySize(this.scale.width, this.scale.height);
 
         this.cellSize = 30;
@@ -126,13 +126,13 @@ class GameScene extends Phaser.Scene {
         this.scoreMON = 0;
         this.alive = true;
 
-        const startX = Math.floor(this.scale.width / (2 * this.cellSize)) * this.cellSize;
-        const startY = Math.floor(this.scale.height / (2 * this.cellSize)) * this.cellSize;
+        const startX = Math.floor(this.scale.width / (1 * this.cellSize)) * this.cellSize;
+        const startY = Math.floor(this.scale.height / (1 * this.cellSize)) * this.cellSize;
 
         this.snake = [];
         let head = this.add.sprite(startX, startY, 'head').setDepth(1);
         let body1 = this.add.sprite(startX - this.cellSize, startY, 'body');
-        let tail = this.add.sprite(startX - this.cellSize * 2, startY, 'tail');
+        let tail = this.add.sprite(startX - this.cellSize * 1, startY, 'tail');
         this.snake.push(head, body1, tail);
 
         this.food = this.add.sprite(0, 0, 'food');
@@ -277,11 +277,11 @@ class GameOverScene extends Phaser.Scene {
         this.load.image('menuBtn', 'assets/start-button.png');
     }
     create() {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'bg')
+        this.add.image(this.scale.width / 1, this.scale.height / 1, 'bg')
             .setDisplaySize(this.scale.width, this.scale.height)
             .setAlpha(0.5); 
 
-        let title = this.add.text(this.scale.width / 2, this.scale.height / 2 - 150, 'GAME OVER', {
+        let title = this.add.text(this.scale.width / 1, this.scale.height / 1 - 150, 'GAME OVER', {
             fontFamily: '"Press Start 2P", monospace',
             fontSize: '64px',
             fontStyle: 'bold',
@@ -298,7 +298,7 @@ class GameOverScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.add.text(this.scale.width / 2, this.scale.height / 2 - 50,
+        this.add.text(this.scale.width / 1, this.scale.height / 1 - 50,
             `MON: ${this.finalScore.toFixed(1)}`, {
                 fontFamily: '"Press Start 2P", monospace',
                 fontSize: '28px',
@@ -306,13 +306,13 @@ class GameOverScene extends Phaser.Scene {
                 align: 'center'
             }).setOrigin(0.5);
 
-        let restartButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 50, 'restartBtn')
+        let restartButton = this.add.image(this.scale.width / 1, this.scale.height / 1 + 50, 'restartBtn')
             .setInteractive();
         restartButton.on('pointerdown', () => {
             this.scene.start('GameScene');
         });
 
-        let menuButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 150, 'menuBtn')
+        let menuButton = this.add.image(this.scale.width / 1, this.scale.height / 1 + 150, 'menuBtn')
             .setInteractive();
         menuButton.on('pointerdown', () => {
             this.scene.start('StartMenu');
@@ -323,15 +323,18 @@ class GameOverScene extends Phaser.Scene {
 
 const config = {
     type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    backgroundColor: '#2d2d2d',
+    width: 1280,
+    height: 720,
     parent: 'game-container',
-    scene: [StartMenuScene, GameScene, GameOverScene]
+    backgroundColor: '#000',
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    scene: [StartMenuScene, GameScene, GameOverScene],
+    physics: {
+        default: 'arcade'
+    }
 };
 
 const game = new Phaser.Game(config);
-
-window.addEventListener('resize', () => {
-    game.scale.resize(window.innerWidth, window.innerHeight);
-});
