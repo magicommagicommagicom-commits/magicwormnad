@@ -1,5 +1,5 @@
 {
-  "name": "vercel-api-test",
+  "name": "vercel-api-redirect-test",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
