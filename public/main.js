@@ -30,111 +30,95 @@ async function sendClaimToServer(wallet, score) {
 // -----------------------------
    
 // -----------------------------
-// Scene Start Menu (revisi UI wallet + cursor blinking)
+// Scene Start Menu (Revisi)
 // -----------------------------
 class StartMenuScene extends Phaser.Scene {
-  constructor() { super('StartMenu'); }
+    constructor() { super('StartMenu'); }
 
-  preload() {
-    this.load.image('startBg', 'assets/background.png');
-  }
+    preload() {
+        this.load.image('startBg', 'assets/background.png');
+        this.load.image('popupBox', 'assets/popup-box.png');   // popup pixel art
+        this.load.image('enterBtn', 'assets/enter-button.png'); // tombol pixel art
+    }
 
-  create() {
-    this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
-      .setDisplaySize(this.scale.width, this.scale.height);
+    create() {
+        // Background
+        this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
+            .setDisplaySize(this.scale.width, this.scale.height);
 
-    // Judul game
-    this.add.text(this.scale.width / 2, 100, 'MAGIC WORM', {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '42px',
-      fill: '#7393e0',
-      stroke: '#000',
-      strokeThickness: 8
-    }).setOrigin(0.5);
+        // Judul Game
+        this.add.text(this.scale.width / 2, 120, 'MAGIC WORM', {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '40px',
+            fill: '#7393e0',
+            stroke: '#000000',
+            strokeThickness: 6
+        }).setOrigin(0.5);
 
-    // === POPUP BOX ===
-    this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 480, 220, 0x2b1d0e)
-      .setStrokeStyle(6, 0x000000);
+        // Popup box (UI pixel art)
+        this.add.image(this.scale.width / 2, this.scale.height / 2, 'popupBox');
 
-    this.add.text(this.scale.width / 2 - 190, this.scale.height / 2 - 70, "Wallet:", {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '20px',
-      fill: '#7393e0'
-    });
+        // Label Wallet
+        this.add.text(this.scale.width / 2 - 160, this.scale.height / 2 - 40, "Wallet:", {
+            fontFamily: '"Press Start 2P"',
+            fontSize: '16px',
+            fill: '#7393e0'
+        }).setOrigin(0, 0.5);
 
-    // Kotak input
-    this.add.rectangle(this.scale.width / 2 + 40, this.scale.height / 2 - 60, 300, 40, 0x111111)
-      .setStrokeStyle(3, 0x7393e0);
+        // Input Wallet (text pixel art di canvas)
+        this.walletText = this.add.text(this.scale.width / 2 - 40, this.scale.height / 2 - 40, "", {
+            fontFamily: '"Press Start 2P"',
+            fontSize: '16px',
+            fill: '#7393e0'
+        }).setOrigin(0, 0.5);
 
-    // Input text + cursor
-    this.currentWallet = "";
-    this.walletText = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "", {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '16px',
-      fill: '#7393e0'
-    }).setOrigin(0.5);
+        this.walletValue = "";
 
-    this.cursor = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "|", {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '16px',
-      fill: '#7393e0'
-    }).setOrigin(0.5);
+        // Listener keyboard
+        this.input.keyboard.on('keydown', (event) => {
+            if (event.key === "Backspace") {
+                this.walletValue = this.walletValue.slice(0, -1);
+            } else if (event.key.length === 1) {
+                if (this.walletValue.length < 42) {
+                    this.walletValue += event.key;
+                }
+            } else if (event.key === "Enter") {
+                this.startGame();
+            }
+            this.walletText.setText(this.walletValue);
+        });
 
-    // Cursor blinking
-    this.time.addEvent({
-      delay: 500,
-      loop: true,
-      callback: () => { this.cursor.visible = !this.cursor.visible; }
-    });
+        // Tombol ENTER (pakai PNG pixel art)
+        let enterBtn = this.add.image(this.scale.width / 2, this.scale.height / 2 + 60, 'enterBtn')
+            .setInteractive();
+        this.add.text(this.scale.width / 2, this.scale.height / 2 + 60, 'ENTER GAME', {
+            fontFamily: '"Press Start 2P"',
+            fontSize: '16px',
+            fill: '#fff'
+        }).setOrigin(0.5);
 
-    // Tombol ENTER GAME
-    let enterBtn = this.add.text(this.scale.width / 2, this.scale.height / 2 + 60, "ENTER GAME", {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '20px',
-      fill: '#fff',
-      backgroundColor: '#a0522d',
-      padding: { x: 20, y: 10 }
-    }).setOrigin(0.5).setInteractive();
+        enterBtn.on('pointerdown', () => this.startGame());
 
-    enterBtn.on('pointerover', () => enterBtn.setStyle({ backgroundColor: '#8B4513' }));
-    enterBtn.on('pointerout', () => enterBtn.setStyle({ backgroundColor: '#a0522d' }));
-    enterBtn.on('pointerdown', () => this.confirmWallet());
+        // Instruksi tambahan
+        this.add.text(this.scale.width / 2, this.scale.height - 50, 'Swipe atau gunakan tombol panah untuk bermain', {
+            fontFamily: '"Press Start 2P"',
+            fontSize: '14px',
+            fill: '#fff'
+        }).setOrigin(0.5);
+    }
 
-    // Keyboard input
-    this.input.keyboard.on('keydown', (event) => {
-      if (event.key === "Backspace") {
-        this.currentWallet = this.currentWallet.slice(0, -1);
-      } else if (event.key === "Enter") {
-        this.confirmWallet();
-      } else if (event.key.length === 1) {
-        if (this.currentWallet.length < 42) {
-          this.currentWallet += event.key.toLowerCase();
+    startGame() {
+        if (!this.walletValue || this.walletValue.trim() === "") {
+            alert("Alamat wallet tidak boleh kosong!");
+            return;
         }
-      }
-      this.updateInputText();
-    });
-
-    this.updateInputText();
-  }
-
-  updateInputText() {
-    this.walletText.setText(this.currentWallet);
-    this.cursor.x = this.walletText.x + this.walletText.width / 2 + 6;
-  }
-
-  confirmWallet() {
-    if (!this.currentWallet.trim()) {
-      alert("⚠️ Alamat wallet tidak boleh kosong!");
-      return;
+        if (!/^0x[a-fA-F0-9]{40}$/.test(this.walletValue)) {
+            alert("Alamat wallet tidak valid!");
+            return;
+        }
+        this.scene.start('GameScene', { wallet: this.walletValue });
     }
-    if (!/^0x[a-f0-9]{6,}$/i.test(this.currentWallet)) {
-      alert("⚠️ Alamat wallet tidak valid!");
-      return;
-    }
-    this.scene.start('GameScene', { wallet: this.currentWallet });
-  }
-  }
-// -----------------------------
+}
 // Scene Game
 // -----------------------------
 class GameScene extends Phaser.Scene {
