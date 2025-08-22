@@ -332,7 +332,7 @@ const config = {
   parent: 'game-container',
   scene: [StartMenuScene, GameScene, GameOverScene]
 };
-
+document.fonts.ready.then(() => {
 const game = new Phaser.Game(config);
 
 window.addEventListener('resize', () => {
