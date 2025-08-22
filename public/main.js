@@ -45,7 +45,7 @@ class StartMenuScene extends Phaser.Scene {
     let startButtonY = this.scale.height / 2 + 50;
     let baseY = startButtonY - 80;
 
-    let titleMagic = this.add.text(this.scale.width / 2 + 0, baseY, 'Magic', {
+    let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Magic', {
       fontFamily: '"Press Start 2P", monospace',
       fontSize: '50px',
       fontStyle: 'bold',
@@ -54,7 +54,7 @@ class StartMenuScene extends Phaser.Scene {
       strokeThickness: 6
     }).setOrigin(1, 0.5);
 
-    let titleWorm = this.add.text(this.scale.width / 2 + 0, baseY, 'Worm', {
+    let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'Worm', {
       fontFamily: '"Press Start 2P", monospace',
       fontSize: '50px',
       fontStyle: 'bold',
