@@ -9,3 +9,18 @@
     "start": "vercel dev"
   }
 }
+{
+  "name": "game-faucet",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "start": "next start",
+    "dev": "next dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "next": "14.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
