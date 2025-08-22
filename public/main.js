@@ -319,25 +319,21 @@ class GameOverScene extends Phaser.Scene {
         });
     }
 }
-
 const config = {
     type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
     parent: 'game-container',
-    backgroundColor: '#000',
+    backgroundColor: '#2d2d2d',
     scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        mode: Phaser.Scale.FIT,      // biar game ngepas layar
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 800,                  // ukuran base game
+        height: 600
     },
-    scene: [StartMenuScene, GameScene, GameOverScene],
-    physics: {
-        default: 'arcade'
-    }
+    scene: [StartMenuScene, GameScene, GameOverScene]
 };
 
 const game = new Phaser.Game(config);
+
 window.addEventListener('resize', () => {
     game.scale.resize(window.innerWidth, window.innerHeight);
 });
-
