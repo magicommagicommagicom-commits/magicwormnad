@@ -1,12 +1,7 @@
-// -----------------------------
-// Konfigurasi Backend & API Key
-// -----------------------------
-const API_URL = "https://game-faucet-backend.vercel.app/api/claim";
+
+const API_URL = "https://magicwormnad-80oo23182-magicoms-projects-0efb6278.vercel.app/api/claim";
 const API_KEY = "mygamefaucet_2025_secret_#98as";
 
-// -----------------------------
-// Fungsi Kirim Klaim ke Backend
-// -----------------------------
 async function sendClaimToServer(wallet, score) {
   try {
     const resp = await fetch(API_URL, {
@@ -52,19 +47,19 @@ class StartMenuScene extends Phaser.Scene {
 
     let titleMagic = this.add.text(this.scale.width / 2 + 0, baseY, 'Magic', {
       fontFamily: '"Press Start 2P", monospace',
-      fontSize: '30px',
+      fontSize: '50px',
       fontStyle: 'bold',
       fill: '#5c306e',
-      stroke: '#8B4513',
+      stroke: '#040001',
       strokeThickness: 6
     }).setOrigin(1, 0.5);
 
     let titleWorm = this.add.text(this.scale.width / 2 + 0, baseY, 'Worm', {
       fontFamily: '"Press Start 2P", monospace',
-      fontSize: '30px',
+      fontSize: '50px',
       fontStyle: 'bold',
       fill: '#5c306e',
-      stroke: '#8B4513',
+      stroke: '#040001',
       strokeThickness: 6
     }).setOrigin(0, 0.5);
 
@@ -118,15 +113,15 @@ class GameScene extends Phaser.Scene {
     this.add.image(this.scale.width / 2, this.scale.height / 2, 'background')
       .setDisplaySize(this.scale.width, this.scale.height);
 
-    // Default ukuran
+    // Default
     this.cellSize = 30;
     let scaleFactor = 1;
 
-    // Deteksi mobile
+    // mobile
     let isMobile = this.scale.width < 600;
     if (isMobile) {
-      this.cellSize = 20;   // grid lebih kecil
-      scaleFactor = 0.6;    // sprite lebih kecil
+      this.cellSize = 20;  
+      scaleFactor = 0.6;    
     }
 
     this.speed = this.cellSize;
