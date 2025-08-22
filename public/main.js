@@ -325,17 +325,18 @@ class GameOverScene extends Phaser.Scene {
 }
 
 const config = {
-  type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
-  backgroundColor: '#2d2d2d',
-  parent: 'game-container',
-  scene: [StartMenuScene, GameScene, GameOverScene]
+    type: Phaser.AUTO,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    backgroundColor: '#2d2d2d',
+    parent: 'game-container',
+    scene: [StartMenuScene, GameScene, GameOverScene]
 };
-
 document.fonts.ready.then(() => {
-const game = new Phaser.Game(config);
+    const game = new Phaser.Game(config);
 
-window.addEventListener('resize', () => {
-  game.scale.resize(window.innerWidth, window.innerHeight);
+    window.addEventListener('resize', () => {
+        game.scale.resize(window.innerWidth, window.innerHeight);
+    });
 });
+
