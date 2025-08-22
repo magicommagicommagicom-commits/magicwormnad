@@ -43,10 +43,10 @@ class StartMenuScene extends Phaser.Scene {
       .setInteractive()
       .setScale(1);
 
-    let baseY = this.scale.height / 2 - 30;
+    let baseY = this.scale.height / 2 - 75;
 
     let titleImage = this.add.image(this.scale.width / 2, baseY, 'title')
-      .setOrigin(0.3);
+      .setOrigin(0.5);
 
     let scaleFactor = this.scale.width / 1200;
     titleImage.setScale(scaleFactor);
