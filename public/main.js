@@ -1,5 +1,5 @@
 
-const API_URL = "https://magicwormnad-80oo23182-magicoms-projects-0efb6278.vercel.app/api/claim";
+const API_URL = "https://magicwormnad.vercel.app/api/claim";
 const API_KEY = "mygamefaucet_2025_secret_#98as";
 
 async function sendClaimToServer(wallet, score) {
