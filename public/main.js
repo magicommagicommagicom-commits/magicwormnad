@@ -145,7 +145,12 @@ class GameScene extends Phaser.Scene {
             stroke: '#8B4513',
             strokeThickness: 6
         });
-
+let isMobile = this.scale.width < 600;
+if (isMobile) {
+    this.snake.forEach(part => part.setScale(0.6)); // worm lebih kecil
+    this.food.setScale(0.6);                        // makanan lebih kecil
+    this.scoreText.setFontSize(16);                 // tulisan score lebih kecil
+}
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.input.on('pointerdown', (pointer) => {
