@@ -29,108 +29,111 @@ async function sendClaimToServer(wallet, score) {
 // Scene Start Menu
 // -----------------------------
    
+// -----------------------------
+// Scene Start Menu (revisi UI wallet + cursor blinking)
+// -----------------------------
 class StartMenuScene extends Phaser.Scene {
-    constructor() { super('StartMenu'); }
+  constructor() { super('StartMenu'); }
 
-    create() {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
-            .setDisplaySize(this.scale.width, this.scale.height);
+  preload() {
+    this.load.image('startBg', 'assets/background.png');
+  }
 
-        // Judul game
-        this.add.text(this.scale.width / 2, 100, 'MAGIC WORM', {
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: '42px',
-            fill: '#7393e0',
-            stroke: '#000',
-            strokeThickness: 8
-        }).setOrigin(0.5);
+  create() {
+    this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
+      .setDisplaySize(this.scale.width, this.scale.height);
 
-        // === POPUP BOX ===
-        this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 480, 220, 0x2b1d0e)
-            .setStrokeStyle(6, 0x000000);
+    // Judul game
+    this.add.text(this.scale.width / 2, 100, 'MAGIC WORM', {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '42px',
+      fill: '#7393e0',
+      stroke: '#000',
+      strokeThickness: 8
+    }).setOrigin(0.5);
 
-        this.add.text(this.scale.width / 2 - 190, this.scale.height / 2 - 70, "Wallet:", {
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: '20px',
-            fill: '#7393e0'
-        });
+    // === POPUP BOX ===
+    this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 480, 220, 0x2b1d0e)
+      .setStrokeStyle(6, 0x000000);
 
-        // Kotak input
-        this.add.rectangle(this.scale.width / 2 + 40, this.scale.height / 2 - 60, 300, 40, 0x111111)
-            .setStrokeStyle(3, 0x7393e0);
+    this.add.text(this.scale.width / 2 - 190, this.scale.height / 2 - 70, "Wallet:", {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '20px',
+      fill: '#7393e0'
+    });
 
-        // Teks input + cursor
-        this.currentWallet = "";
-        this.walletText = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "", {
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: '16px',
-            fill: '#7393e0'
-        }).setOrigin(0.5);
+    // Kotak input
+    this.add.rectangle(this.scale.width / 2 + 40, this.scale.height / 2 - 60, 300, 40, 0x111111)
+      .setStrokeStyle(3, 0x7393e0);
 
-        this.cursor = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "|", {
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: '16px',
-            fill: '#7393e0'
-        }).setOrigin(0.5);
+    // Input text + cursor
+    this.currentWallet = "";
+    this.walletText = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "", {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '16px',
+      fill: '#7393e0'
+    }).setOrigin(0.5);
 
-        // Cursor blink
-        this.time.addEvent({
-            delay: 500,
-            loop: true,
-            callback: () => {
-                this.cursor.visible = !this.cursor.visible;
-            }
-        });
+    this.cursor = this.add.text(this.scale.width / 2 + 40, this.scale.height / 2 - 60, "|", {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '16px',
+      fill: '#7393e0'
+    }).setOrigin(0.5);
 
-        // Tombol ENTER GAME
-        let enterBtn = this.add.text(this.scale.width / 2, this.scale.height / 2 + 60, "ENTER GAME", {
-            fontFamily: '"Press Start 2P", monospace',
-            fontSize: '20px',
-            fill: '#fff',
-            backgroundColor: '#a0522d',
-            padding: { x: 20, y: 10 }
-        }).setOrigin(0.5).setInteractive();
+    // Cursor blinking
+    this.time.addEvent({
+      delay: 500,
+      loop: true,
+      callback: () => { this.cursor.visible = !this.cursor.visible; }
+    });
 
-        enterBtn.on('pointerover', () => enterBtn.setStyle({ backgroundColor: '#8B4513' }));
-        enterBtn.on('pointerout', () => enterBtn.setStyle({ backgroundColor: '#a0522d' }));
-        enterBtn.on('pointerdown', () => this.confirmWallet());
+    // Tombol ENTER GAME
+    let enterBtn = this.add.text(this.scale.width / 2, this.scale.height / 2 + 60, "ENTER GAME", {
+      fontFamily: '"Press Start 2P", monospace',
+      fontSize: '20px',
+      fill: '#fff',
+      backgroundColor: '#a0522d',
+      padding: { x: 20, y: 10 }
+    }).setOrigin(0.5).setInteractive();
 
-        // Keyboard input
-        this.input.keyboard.on('keydown', (event) => {
-            if (event.key === "Backspace") {
-                this.currentWallet = this.currentWallet.slice(0, -1);
-            } else if (event.key === "Enter") {
-                this.confirmWallet();
-            } else if (event.key.length === 1) {
-                if (this.currentWallet.length < 42) {
-                    this.currentWallet += event.key.toLowerCase();
-                }
-            }
-            this.updateInputText();
-        });
+    enterBtn.on('pointerover', () => enterBtn.setStyle({ backgroundColor: '#8B4513' }));
+    enterBtn.on('pointerout', () => enterBtn.setStyle({ backgroundColor: '#a0522d' }));
+    enterBtn.on('pointerdown', () => this.confirmWallet());
 
-        this.updateInputText();
-    }
-
-    updateInputText() {
-        // Update teks + posisi cursor
-        this.walletText.setText(this.currentWallet);
-        let textWidth = this.walletText.width;
-        this.cursor.x = this.walletText.x + textWidth / 2 + 6; // posisikan cursor setelah teks
-    }
-
-    confirmWallet() {
-        if (!this.currentWallet.trim()) {
-            alert("⚠️ Alamat wallet tidak boleh kosong!");
-            return;
+    // Keyboard input
+    this.input.keyboard.on('keydown', (event) => {
+      if (event.key === "Backspace") {
+        this.currentWallet = this.currentWallet.slice(0, -1);
+      } else if (event.key === "Enter") {
+        this.confirmWallet();
+      } else if (event.key.length === 1) {
+        if (this.currentWallet.length < 42) {
+          this.currentWallet += event.key.toLowerCase();
         }
-        if (!/^0x[a-f0-9]{6,}$/i.test(this.currentWallet)) {
-            alert("⚠️ Alamat wallet tidak valid!");
-            return;
-        }
-        this.scene.start('GameScene', { wallet: this.currentWallet });
+      }
+      this.updateInputText();
+    });
+
+    this.updateInputText();
+  }
+
+  updateInputText() {
+    this.walletText.setText(this.currentWallet);
+    this.cursor.x = this.walletText.x + this.walletText.width / 2 + 6;
+  }
+
+  confirmWallet() {
+    if (!this.currentWallet.trim()) {
+      alert("⚠️ Alamat wallet tidak boleh kosong!");
+      return;
     }
-}
+    if (!/^0x[a-f0-9]{6,}$/i.test(this.currentWallet)) {
+      alert("⚠️ Alamat wallet tidak valid!");
+      return;
+    }
+    this.scene.start('GameScene', { wallet: this.currentWallet });
+  }
+  }
 // -----------------------------
 // Scene Game
 // -----------------------------
