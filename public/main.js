@@ -24,15 +24,11 @@ async function sendClaimToServer(wallet, score) {
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error || "Claim failed");
 
-    alert(`✅ Claim sukses! TX: ${data.txHash}`);
+    alert(âœ… Claim sukses! TX: ${data.txHash});
   } catch (err) {
-    alert("❌ Claim error: " + err.message);
+    alert("âŒ Claim error: " + err.message);
   }
 }
-
-// -----------------------------
-// Scene Start Menu
-// -----------------------------
 class StartMenuScene extends Phaser.Scene {
     constructor() { super('StartMenu'); }
     preload() {
@@ -50,18 +46,18 @@ class StartMenuScene extends Phaser.Scene {
         let startButtonY = this.scale.height / 2 + 50;
         let baseY = startButtonY - 80; 
 
-        let titleMagic = this.add.text(this.scale.width / 2 + 0, baseY, 'Magic', {
+        let titleEth = this.add.text(this.scale.width / 2 + 50, baseY, 'Eth', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '30px',
+            fontSize: '80px',
             fontStyle: 'bold',
             fill: '#000000', 
             stroke: '#8B4513',
             strokeThickness: 6
         }).setOrigin(1, 0.5);
 
-        let titleWorm = this.add.text(this.scale.width / 2 + 0, baseY, 'Worm', {
+        let titleOS = this.add.text(this.scale.width / 2 + 50, baseY, 'OS', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '30px',
+            fontSize: '80px',
             fontStyle: 'bold',
             fill: '#7393e0', 
             stroke: '#8B4513',
@@ -69,7 +65,7 @@ class StartMenuScene extends Phaser.Scene {
         }).setOrigin(0, 0.5);
 
         this.tweens.add({
-            targets: [titleMagic, titleWorm],
+            targets: [titleEth, titleOS],
             y: baseY - 5,
             duration: 1000,
             yoyo: true,
@@ -84,12 +80,7 @@ class StartMenuScene extends Phaser.Scene {
         });
 
         startButton.on('pointerdown', () => {
-            let wallet = prompt("Masukkan alamat wallet MON Anda:");
-            if (!wallet || wallet.trim() === "") {
-                alert("Alamat wallet tidak boleh kosong!");
-                return;
-            }
-            this.scene.start('GameScene', { wallet: wallet });
+            this.scene.start('GameScene');
         });
 
         this.add.text(this.scale.width / 2, this.scale.height - 50, 'Swipe atau gunakan tombol panah untuk bermain', {
@@ -99,14 +90,8 @@ class StartMenuScene extends Phaser.Scene {
     }
 }
 
-// -----------------------------
-// Scene Game
-// -----------------------------
 class GameScene extends Phaser.Scene {
     constructor() { super('GameScene'); }
-    init(data) {
-        this.playerWallet = data.wallet || "";
-    }
     preload() {
         this.load.image('head', 'assets/worm-head.png');
         this.load.image('body', 'assets/worm-body.png');
@@ -123,7 +108,7 @@ class GameScene extends Phaser.Scene {
         this.direction = 'RIGHT';
         this.nextDirection = 'RIGHT';
         this.moveTimer = 0;
-        this.scoreMON = 0;
+        this.score = 0;
         this.alive = true;
 
         const startX = Math.floor(this.scale.width / (2 * this.cellSize)) * this.cellSize;
@@ -138,19 +123,25 @@ class GameScene extends Phaser.Scene {
         this.food = this.add.sprite(0, 0, 'food');
         this.placeFood();
 
-        this.scoreText = this.add.text(10, 10, 'MON: 0', { 
+        this.scoreText = this.add.text(10, 10, 'Score: 0', { 
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '18px', 
+            fontSize: '24px', 
             fill: '#fff', 
             stroke: '#8B4513',
             strokeThickness: 6
         });
-let isMobile = this.scale.width < 600;
-if (isMobile) {
-    this.snake.forEach(part => part.setScale(0.6)); // worm lebih kecil
-    this.food.setScale(0.6);                        // makanan lebih kecil
-    this.scoreText.setFontSize(16);                 // tulisan score lebih kecil
-}
+
+        // 🔹 Penyesuaian ukuran untuk HP
+        let isMobile = this.scale.width < 600;
+        if (isMobile) {
+            this.snake.forEach(part => part.setScale(0.6)); // kecilkan head, body, tail
+            this.food.setScale(0.6);                        // kecilkan food
+            this.scoreText.setFontSize(16);                 // kecilkan teks score
+            this.snakeScale = 0.6;                          // simpan scale untuk segmen baru
+        } else {
+            this.snakeScale = 1;
+        }
+
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.input.on('pointerdown', (pointer) => {
@@ -231,16 +222,11 @@ if (isMobile) {
                 this.snake[this.snake.length - 1].x,
                 this.snake[this.snake.length - 1].y,
                 'body'
-            );
+            ).setScale(this.snakeScale);   // 🔹 segmen baru ikut scale
             this.snake.push(newSegment);
-            this.scoreMON = Math.min(5, this.scoreMON + 0.1);
-            this.scoreText.setText('MON: ' + this.scoreMON.toFixed(1));
+            this.score += 10;
+            this.scoreText.setText('Score: ' + this.score);
             this.placeFood();
-
-            if (this.scoreMON >= 5) {
-                this.gameOver();
-                return;
-            }
         }
     }
 
@@ -265,11 +251,12 @@ if (isMobile) {
     }
 
     gameOver() {
-        this.alive = false;
-        if (this.scoreMON > 0 && this.playerWallet) {
-            sendClaimToServer(this.playerWallet, this.scoreMON);
+        let highScore = localStorage.getItem('wormHighScore') || 0;
+        if (this.score > highScore) {
+            localStorage.setItem('wormHighScore', this.score);
         }
-        this.scene.start('GameOverScene', { score: this.scoreMON });
+        this.alive = false;
+        this.scene.start('GameOverScene', { score: this.score });
     }
 }
 
@@ -288,7 +275,7 @@ class GameOverScene extends Phaser.Scene {
 
         let title = this.add.text(this.scale.width / 2, this.scale.height / 2 - 150, 'GAME OVER', {
             fontFamily: '"Press Start 2P", monospace',
-            fontSize: '30px',
+            fontSize: '64px',
             fontStyle: 'bold',
             fill: '#f00',
             stroke: '#000',
@@ -303,10 +290,11 @@ class GameOverScene extends Phaser.Scene {
             repeat: -1
         });
 
+        let highScore = localStorage.getItem('wormHighScore') || 0;
         this.add.text(this.scale.width / 2, this.scale.height / 2 - 50,
-            `MON: ${this.finalScore.toFixed(1)}`, {
+            Score: ${this.finalScore}\nHigh Score: ${highScore}, {
                 fontFamily: '"Press Start 2P", monospace',
-                fontSize: '20px',
+                fontSize: '28px',
                 fill: '#fff',
                 align: 'center'
             }).setOrigin(0.5);
@@ -324,6 +312,7 @@ class GameOverScene extends Phaser.Scene {
         });
     }
 }
+
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
