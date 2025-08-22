@@ -1,23 +1,13 @@
 {
-  "name": "magicwormnad",
+  "name": "game-faucet-backend",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": {
-    "ethers": "^5.7.2"
-  },
-  "scripts": {
-    "start": "vercel dev"
-  }
-}
-{
-  "name": "game-faucet",
-  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "vercel dev"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.0.0"
+    "ethers": "^5.7.2",
+    "@supabase/supabase-js": "^2.39.0"
   }
 }
-
