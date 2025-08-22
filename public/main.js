@@ -46,7 +46,7 @@ class StartMenuScene extends Phaser.Scene {
     let baseY = this.scale.height / 2 - 30;
 
     let titleImage = this.add.image(this.scale.width / 2, baseY, 'title')
-      .setOrigin(0.5);
+      .setOrigin(0.3);
 
     let scaleFactor = this.scale.width / 1200;
     titleImage.setScale(scaleFactor);
@@ -272,7 +272,7 @@ class GameOverScene extends Phaser.Scene {
       .setDisplaySize(this.scale.width, this.scale.height)
       .setAlpha(0.5);
 
-    let title = this.add.text(this.scale.width / 2, this.scale.height / 2 - 150, 'GAME OVER', {
+    let title = this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'GAME OVER', {
       fontFamily: '"Press Start 2P", monospace',
       fontSize: '30px',
       fontStyle: 'bold',
