@@ -28,57 +28,7 @@ async function sendClaimToServer(wallet, score) {
 // -----------------------------
 // Scene Start Menu
 // -----------------------------
-class StartMenuScene extends Phaser.Scene {
-  constructor() { super('StartMenu'); }
-  preload() {
-    this.load.image('startBg', 'assets/background.png');
-    this.load.image('startBtn', 'assets/start-button.png');
-  }
-  create() {
-    this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
-      .setDisplaySize(this.scale.width, this.scale.height);
-
-    let startButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 50, 'startBtn')
-      .setInteractive()
-      .setScale(1);
-
-    let startButtonY = this.scale.height / 2 + 50;
-    let baseY = startButtonY - 80;
-
-    let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Magic', {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '50px',
-      fontStyle: 'bold',
-      fill: '#5c306e',
-      stroke: '#040001',
-      strokeThickness: 6
-    }).setOrigin(1, 0.5);
-
-    let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'Worm', {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '50px',
-      fontStyle: 'bold',
-      fill: '#5c306e',
-      stroke: '#040001',
-      strokeThickness: 6
-    }).setOrigin(0, 0.5);
-
-    this.tweens.add({
-      targets: [titleMagic, titleWorm],
-      y: baseY - 5,
-      duration: 1000,
-      yoyo: true,
-      repeat: -1
-    });
-
-    startButton.on('pointerover', () => {
-      this.tweens.add({ targets: startButton, scale: 1.1, duration: 200 });
-    });
-    startButton.on('pointerout', () => {
-      this.tweens.add({ targets: startButton, scale: 1, duration: 200 });
-    });
-
-    
+   
 class StartMenuScene extends Phaser.Scene {
     constructor() { super('StartMenu'); }
 
