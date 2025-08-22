@@ -33,6 +33,7 @@ class StartMenuScene extends Phaser.Scene {
   preload() {
     this.load.image('startBg', 'assets/background.png');
     this.load.image('startBtn', 'assets/start-button.png');
+    this.load.image('title', 'assets/title.png');
   }
   create() {
     this.add.image(this.scale.width / 2, this.scale.height / 2, 'startBg')
@@ -42,29 +43,16 @@ class StartMenuScene extends Phaser.Scene {
       .setInteractive()
       .setScale(1);
 
-    let startButtonY = this.scale.height / 2 + 50;
-    let baseY = startButtonY - 80;
+    let baseY = this.scale.height / 2 - 30;
 
-    let titleMagic = this.add.text(this.scale.width / 2 + 50, baseY, 'Magic', {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '50px',
-      fontStyle: 'bold',
-      fill: '#5c306e',
-      stroke: '#040001',
-      strokeThickness: 6
-    }).setOrigin(1, 0.5);
+    let titleImage = this.add.image(this.scale.width / 2, baseY, 'title')
+      .setOrigin(0.5);
 
-    let titleWorm = this.add.text(this.scale.width / 2 + 50, baseY, 'Worm', {
-      fontFamily: '"Press Start 2P", monospace',
-      fontSize: '50px',
-      fontStyle: 'bold',
-      fill: '#5c306e',
-      stroke: '#040001',
-      strokeThickness: 6
-    }).setOrigin(0, 0.5);
+    let scaleFactor = this.scale.width / 1200;
+    titleImage.setScale(scaleFactor);
 
     this.tweens.add({
-      targets: [titleMagic, titleWorm],
+      targets: titleImage,
       y: baseY - 5,
       duration: 1000,
       yoyo: true,
@@ -93,7 +81,6 @@ class StartMenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
   }
 }
-
 
 // Scene Game
 class GameScene extends Phaser.Scene {
