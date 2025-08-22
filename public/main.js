@@ -326,8 +326,8 @@ const config = {
     scale: {
         mode: Phaser.Scale.FIT,      // biar game ngepas layar
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 720,                  // ukuran base game
-        height: 1280
+        width: 800,                  // ukuran base game
+        height: 600
     },
     scene: [StartMenuScene, GameScene, GameOverScene]
 };
