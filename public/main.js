@@ -321,14 +321,10 @@ class GameOverScene extends Phaser.Scene {
 }
 const config = {
     type: Phaser.AUTO,
-    parent: 'game-container',
+    width: window.innerWidth,
+    height: window.innerHeight,
     backgroundColor: '#2d2d2d',
-    scale: {
-        mode: Phaser.Scale.FIT,      // biar game ngepas layar
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 800,                  // ukuran base game
-        height: 600
-    },
+    parent: 'game-container',
     scene: [StartMenuScene, GameScene, GameOverScene]
 };
 
